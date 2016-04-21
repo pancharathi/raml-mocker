@@ -122,7 +122,10 @@ function getRamlRequestsToMockMethods(definition, uri, formats, callback) {
             var responsesMethodByCode = getResponsesByCode(method.responses);
 
             var methodMocker = new RequestMocker(uri, method.method);
-
+			if(method.body) {
+				var body = method.body && method.body['application/json'];
+				methodMocker.body = body;
+			}
             var currentMockDefaultCode = null;
             _.each(responsesMethodByCode, function (reqDefinition) {
                 methodMocker.addResponse(reqDefinition.code, function () {
@@ -172,7 +175,12 @@ function getResponsesByCode(responses) {
                 schema: schema,
                 example: example
             });
-        }
+        } else if (!_.isNaN(Number(code))) {
+            code = Number(code);
+			responsesByCode.push({
+                code: code
+            });
+		}
     });
     return responsesByCode;
 }

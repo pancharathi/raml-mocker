@@ -3,6 +3,7 @@ var _ = require('lodash');
 var RequestMocker = function (uri, method) {
     this.uri = uri;
     this.method = method;
+	this.body = {};
     this.responses = {};
     this.examples = {};
 };
